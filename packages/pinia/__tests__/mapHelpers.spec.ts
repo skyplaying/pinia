@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import {
   createPinia,
   defineStore,
@@ -9,8 +10,8 @@ import {
   setMapStoreSuffix,
 } from '../src'
 import { mount } from '@vue/test-utils'
-import { nextTick, defineComponent } from 'vue'
-import { mockWarn } from 'jest-mock-warn'
+import { nextTick, defineComponent, ref, computed } from 'vue'
+import { mockWarn } from './vitest-mock-warn'
 
 describe('Map Helpers', () => {
   const useStore = defineStore({
@@ -52,7 +53,6 @@ describe('Map Helpers', () => {
       })
 
       const wrapper = mount(Component, { global: { plugins: [pinia] } })
-      // const store = useStore()
       // @ts-expect-error: by default this shouldn't exist
       expect(wrapper.vm.main).toBeDefined()
       expect(wrapper.vm.mainStore).not.toBeDefined()
@@ -243,6 +243,28 @@ describe('Map Helpers', () => {
         `{{ count }} {{ myA }}`,
         `0 true`,
         'replaced replaced'
+      )
+    })
+
+    it('setup store', async () => {
+      const useSetupStore = defineStore('setup', () => {
+        const text = ref('initial')
+
+        const textUpper = computed({
+          get: () => text.value.toUpperCase(),
+          set: (v) => {
+            text.value = v
+          },
+        })
+
+        return { text, textUpper }
+      })
+
+      await testComponent(
+        mapWritableState(useSetupStore, ['text', 'textUpper']),
+        `{{ text }} {{ textUpper }}`,
+        `initial INITIAL`,
+        'replaced REPLACED'
       )
     })
   })

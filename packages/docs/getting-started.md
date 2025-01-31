@@ -1,4 +1,9 @@
+# Getting Started
+
 ## Installation
+
+<VueMasteryLogoLink for="pinia-cheat-sheet">
+</VueMasteryLogoLink>
 
 Install `pinia` with your favorite package manager:
 
@@ -9,22 +14,28 @@ npm install pinia
 ```
 
 :::tip
-If your app is using Vue 2, you also need to install the composition api: `@vue/composition-api`. If you are using Nuxt, you should follow [these instructions](/ssr/nuxt.md).
+If your app is using Vue <2.7, you also need to install the composition api: `@vue/composition-api`. If you are using Nuxt, you should follow [these instructions](/ssr/nuxt.md).
 :::
 
 If you are using the Vue CLI, you can instead give this [**unofficial plugin**](https://github.com/wobsoriano/vue-cli-plugin-pinia) a try.
 
-Create a pinia (the root store) and pass it to the app:
+Create a pinia instance (the root store) and pass it to the app as a plugin:
 
-```js
+```js {2,5-6,8}
+import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import App from './App.vue'
 
-app.use(createPinia())
+const pinia = createPinia()
+const app = createApp(App)
+
+app.use(pinia)
+app.mount('#app')
 ```
 
 If you are using Vue 2, you also need to install a plugin and inject the created `pinia` at the root of the app:
 
-```js
+```js {1,3-4,12}
 import { createPinia, PiniaVuePlugin } from 'pinia'
 
 Vue.use(PiniaVuePlugin)
@@ -40,7 +51,7 @@ new Vue({
 })
 ```
 
-This will also add devtools support. In Vue 3, some features like time traveling and editing are still not supported because vue-devtools doesn't expose the necessary APIs yet but the devtools have way more features and the developer experience as a whole is far superior. In Vue 2, Pinia uses the existing interface for Vuex (and can therefore not be used alongside it).
+This will also add devtools support. In Vue 3, some features like time traveling and editing are still not supported because vue-devtools doesn't expose the necessary APIs yet but the devtools have way more features and the developer experience as a whole is far superior.
 
 ## What is a Store?
 
@@ -53,3 +64,7 @@ A store should contain data that can be accessed throughout your application. Th
 On the other hand, you should avoid including in the store local data that could be hosted in a component instead, e.g. the visibility of an element local to a page.
 
 Not all applications need access to a global state, but if yours need one, Pinia will make your life easier.
+
+## When should I **not** use a Store
+
+Sometimes we end up using a store for too many things. If you feel like your application is over using stores, you might want to re consider the purposes of your stores. Namely, if some of their logic should just be composables or if some of their state should be local to a component. This is covered in depth in the [(Not) Overusing stores](https://masteringpinia.com/lessons/not-overusing-stores) lesson of Mastering Pinia.
