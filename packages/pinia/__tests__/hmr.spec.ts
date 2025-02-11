@@ -1,3 +1,4 @@
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { computed, reactive, ref, toRefs, watch } from 'vue'
 import {
   createPinia,
@@ -8,7 +9,7 @@ import {
 } from '../src'
 
 function defineOptions<
-  O extends Omit<DefineStoreOptions<string, StateTree, any, any>, 'id'>
+  O extends Omit<DefineStoreOptions<string, StateTree, any, any>, 'id'>,
 >(options: O): O {
   return options
 }
@@ -115,8 +116,8 @@ describe('HMR', () => {
         const useStore = defineStore('id', baseSetup)
         const store: any = useStore()
 
-        const directSpy = jest.fn()
-        const $stateSpy = jest.fn()
+        const directSpy = vi.fn()
+        const $stateSpy = vi.fn()
 
         watch(() => store.n, directSpy, { flush: 'sync' })
         watch(() => store.$state.n, $stateSpy, { flush: 'sync' })
@@ -232,7 +233,7 @@ describe('HMR', () => {
         const useStore = defineStore('id', baseSetup)
         const store: any = useStore()
 
-        const spy = jest.fn()
+        const spy = vi.fn()
 
         watch(
           () => {
@@ -357,8 +358,8 @@ describe('HMR', () => {
         const useStore = defineStore('id', baseOptions)
         const store: any = useStore()
 
-        const directSpy = jest.fn()
-        const $stateSpy = jest.fn()
+        const directSpy = vi.fn()
+        const $stateSpy = vi.fn()
 
         watch(() => store.n, directSpy, { flush: 'sync' })
         watch(() => store.$state.n, $stateSpy, { flush: 'sync' })
@@ -458,7 +459,7 @@ describe('HMR', () => {
         const useStore = defineStore('id', baseOptions)
         const store: any = useStore()
 
-        const spy = jest.fn()
+        const spy = vi.fn()
 
         watch(
           () => {
@@ -488,5 +489,10 @@ describe('HMR', () => {
         expect(spy).toHaveBeenCalledTimes(2)
       })
     })
+  })
+
+  describe('both', () => {
+    it.todo('keeps $subscribe subscriptions')
+    it.todo('$onAction subscriptions')
   })
 })
