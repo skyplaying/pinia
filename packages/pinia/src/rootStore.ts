@@ -1,8 +1,8 @@
 import {
   App,
   EffectScope,
-  getCurrentInstance,
   inject,
+  hasInjectionContext,
   InjectionKey,
   Ref,
 } from 'vue-demi'
@@ -30,14 +30,20 @@ export let activePinia: Pinia | undefined
  *
  * @param pinia - Pinia instance
  */
-export const setActivePinia = (pinia: Pinia | undefined) =>
-  (activePinia = pinia)
+// @ts-expect-error: cannot constrain the type of the return
+export const setActivePinia: _SetActivePinia = (pinia) => (activePinia = pinia)
+
+interface _SetActivePinia {
+  (pinia: Pinia): Pinia
+  (pinia: undefined): undefined
+  (pinia: Pinia | undefined): Pinia | undefined
+}
 
 /**
  * Get the currently active pinia if there is any.
  */
 export const getActivePinia = () =>
-  (getCurrentInstance() && inject(piniaSymbol)) || activePinia
+  (hasInjectionContext() && inject(piniaSymbol)) || activePinia
 
 /**
  * Every application must own its own pinia to be able to create stores
@@ -104,7 +110,7 @@ export interface PiniaPluginContext<
   Id extends string = string,
   S extends StateTree = StateTree,
   G /* extends _GettersTree<S> */ = _GettersTree<S>,
-  A /* extends _ActionsTree */ = _ActionsTree
+  A /* extends _ActionsTree */ = _ActionsTree,
 > {
   /**
    * pinia instance.
@@ -122,7 +128,7 @@ export interface PiniaPluginContext<
   store: Store<Id, S, G, A>
 
   /**
-   * Current store being extended.
+   * Initial options defining the store when calling `defineStore()`.
    */
   options: DefineStoreOptionsInPlugin<Id, S, G, A>
 }
@@ -137,9 +143,9 @@ export interface PiniaPlugin {
    *
    * @param context - Context
    */
-  (context: PiniaPluginContext): Partial<
-    PiniaCustomProperties & PiniaCustomStateProperties
-  > | void
+  (
+    context: PiniaPluginContext
+  ): Partial<PiniaCustomProperties & PiniaCustomStateProperties> | void
 }
 
 /**

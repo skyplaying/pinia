@@ -1,3 +1,241 @@
+## [0.9.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.8.0...@pinia/nuxt@0.9.0) (2024-12-04)
+
+This version requires at least Vue 2.7. On January 2025, Pinia 3.0 and `@pinia/nuxt` 1.0 will drop support for Vue 2 (which already reached EOL last year). If you need support or help migrating, you can [book help with Eduardo (@posva)](https://cal.com/posva/consultancy).
+
+## [0.8.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.7.0...@pinia/nuxt@0.8.0) (2024-11-28)
+
+This release partially fixes a bug in production of:
+
+> vueDemi2.effectScope is not a function
+
+The remaining part in in [nypm](https://github.com/unjs/nypm/pull/165). In the meantime, you will have to manually add `pinia` with your favorite package manager:
+
+```sh
+pnpm i pinia
+```
+
+### Bug Fixes
+
+- allow module to install pinia alongside ([#2846](https://github.com/vuejs/pinia/issues/2846)) ([3e8ed69](https://github.com/vuejs/pinia/commit/3e8ed69addc30954b887241faed8778048e5d20e))
+
+# [0.7.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.6.1...@pinia/nuxt@0.7.0) (2024-11-03)
+
+### Bug Fixes
+
+- dedupe pinia ([#2821](https://github.com/vuejs/pinia/issues/2821)) ([90d8eb9](https://github.com/vuejs/pinia/commit/90d8eb900071964388c54d579ffc84c8ef01c191))
+
+## [0.6.1](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.6.0...@pinia/nuxt@0.6.1) (2024-10-31)
+
+### Bug Fixes
+
+- upgrade minimum version for nuxt kit ([3dab0a6](https://github.com/vuejs/pinia/commit/3dab0a6a43f00d7a52d62d53748c7d5e0cb061ea)), closes [#2814](https://github.com/vuejs/pinia/issues/2814)
+
+# [0.6.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.5...@pinia/nuxt@0.6.0) (2024-10-29)
+
+### Bug Fixes
+
+- avoid broken alias ([65031ee](https://github.com/vuejs/pinia/commit/65031ee77ed46a34bc2359223e24c7944e840819))
+- **nuxt:** ensure payload plugin declaration is generated ([#2806](https://github.com/vuejs/pinia/issues/2806)) ([99ab76c](https://github.com/vuejs/pinia/commit/99ab76c685405a93f7fc41b335fe5710e9b7fee8))
+
+### Features
+
+- **nuxt:** do not serialize skipHydrate properties ([e645fc1](https://github.com/vuejs/pinia/commit/e645fc12ea115a2d2cc395ad83e4cc3df350c4ea))
+
+## [0.5.5](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.4...@pinia/nuxt@0.5.5) (2024-09-30)
+
+No changes in this release
+
+## [0.5.4](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.3...@pinia/nuxt@0.5.4) (2024-08-21)
+
+### Bug Fixes
+
+- use correct pinia version range ([c34c0b6](https://github.com/vuejs/pinia/commit/c34c0b67fd635ae7b8d8dab5557ec5bdfc6d2741)), closes [vuejs/pinia#2748](https://github.com/vuejs/pinia/issues/2748)
+
+## [0.5.3](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.2...@pinia/nuxt@0.5.3) (2024-08-06)
+
+This release contain no code changes.
+
+## [0.5.2](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.2-beta.0...@pinia/nuxt@0.5.2) (2024-07-26)
+
+### Bug Fixes
+
+- **types:** require unwrapped state in patch ([c38fa0d](https://github.com/vuejs/pinia/commit/c38fa0dbae5629509bc7d1ffc999b5aedfc3d3b7))
+
+## [0.5.2-beta.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.1...@pinia/nuxt@0.5.2-beta.0) (2024-04-17)
+
+### Bug Fixes
+
+- opt in to `import.meta.*` properties ([#2622](https://github.com/vuejs/pinia/issues/2622)) ([0a94c3c](https://github.com/vuejs/pinia/commit/0a94c3c8c917a29c8e58cded33aa6f3e073f3577))
+- **types:** use declare module vue ([8a6ce86](https://github.com/vuejs/pinia/commit/8a6ce86db83b6315c067c8a98c898b3c74efe62e))
+
+## [0.5.1](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.1...@pinia/nuxt@0.5.1) (2024-04-04)
+
+### Bug Fixes
+
+- opt in to `import.meta.*` properties ([#2622](https://github.com/vuejs/pinia/issues/2622)) ([0a94c3c](https://github.com/vuejs/pinia/commit/0a94c3c8c917a29c8e58cded33aa6f3e073f3577))
+- **types:** use declare module vue ([8a6ce86](https://github.com/vuejs/pinia/commit/8a6ce86db83b6315c067c8a98c898b3c74efe62e))
+
+## [0.5.1](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.5.0...@pinia/nuxt@0.5.1) (2023-10-16)
+
+### Bug Fixes
+
+- **nuxt:** use srcDir by default for storesDirs ([dd90708](https://github.com/vuejs/pinia/commit/dd907089a688742d609bfd24c182cb7b6d6df375)), closes [#2447](https://github.com/vuejs/pinia/issues/2447)
+
+### Features
+
+- Add storeToRefs to the auto imports in @pinia/nuxt [#1876](https://github.com/vuejs/pinia/issues/1876) ([#2427](https://github.com/vuejs/pinia/issues/2427)) ([f19f368](https://github.com/vuejs/pinia/commit/f19f368a963be68940432bb0d4e0f5d74306c2d9))
+
+# [0.5.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.11...@pinia/nuxt@0.5.0) (2023-10-13)
+
+### Features
+
+- **imports:** add storesDirs auto import ([70a95ba](https://github.com/vuejs/pinia/commit/70a95ba9b1d6a55aeea72088dfedd478aa4db766)), closes [#1604](https://github.com/vuejs/pinia/issues/1604)
+
+### BREAKING CHANGES
+
+- **imports:** the option `autoImports` has been removed as it offered  
+  no value compared to the existing `imports` option in Nuxt. Instead, we
+  are automatically adding `defineStore()`, and `acceptHMRUpdate()` to the
+  list of auto imported functions. We are also adding the `./stores` dirs
+  to auto imports now, so if you were manually adding that option, it can
+  be removed.
+
+## [0.4.11](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.10...@pinia/nuxt@0.4.11) (2023-05-17)
+
+This release only contains build related changes
+
+## [0.4.10](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.9...@pinia/nuxt@0.4.10) (2023-05-08)
+
+This release only contains build related changes
+
+## [0.4.9](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.8...@pinia/nuxt@0.4.9) (2023-04-20)
+
+### Bug Fixes
+
+- **nuxt:** add workaround to preserve type output ([#2147](https://github.com/vuejs/pinia/issues/2147)) ([65debf9](https://github.com/vuejs/pinia/commit/65debf9be0567159b932fcd0fc445a8a2bdbaa4d))
+- **types:** typescript 5.0 acceptHMRUpdate error ([#2098](https://github.com/vuejs/pinia/issues/2098)) ([#2152](https://github.com/vuejs/pinia/issues/2152)) ([1469971](https://github.com/vuejs/pinia/commit/146997196f87abc691340fd46ae758a0865b8a73))
+
+## [0.4.8](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.7...@pinia/nuxt@0.4.8) (2023-04-07)
+
+### Bug Fixes
+
+- support "types" condition in "exports" field ([#2078](https://github.com/vuejs/pinia/issues/2078)) ([66d3a5e](https://github.com/vuejs/pinia/commit/66d3a5edd03f28f52daf35449db8c5f660c70b01))
+
+## [0.4.7](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.6...@pinia/nuxt@0.4.7) (2023-02-20)
+
+No changes in this release
+
+## [0.4.6](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.5...@pinia/nuxt@0.4.6) (2022-11-27)
+
+### Bug Fixes
+
+- **nuxt:** Avoid recursive import from Nuxt #imports ([#1823](https://github.com/vuejs/pinia/issues/1823)) ([e1c0a19](https://github.com/vuejs/pinia/commit/e1c0a19abca2b8574c81f6f6e3d1b324924ba68d))
+- **nuxt:** use #app imports ([6cf7e48](https://github.com/vuejs/pinia/commit/6cf7e48264c575d705aeb41c978817a48e55978d))
+
+## [0.4.5](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.4...@pinia/nuxt@0.4.5) (2022-11-21)
+
+### Bug Fixes
+
+- **nuxt:** ensure pinia plugin is added before router ([3e4e63c](https://github.com/vuejs/pinia/commit/3e4e63c1f4749ee09b045a771c546de33dd4c405))
+
+## [0.4.4](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.3...@pinia/nuxt@0.4.4) (2022-11-17)
+
+### Bug Fixes
+
+- **nuxt:** nuxt v3 compatibility ([#1808](https://github.com/vuejs/pinia/issues/1808)) ([aa12958](https://github.com/vuejs/pinia/commit/aa129582306c03a186e4ba2009225d3b95feb1d9))
+
+## [0.4.3](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.2...@pinia/nuxt@0.4.3) (2022-10-08)
+
+- Update nuxt version and usage to rc.11
+
+## [0.4.2](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.1...@pinia/nuxt@0.4.2) (2022-09-06)
+
+### Bug Fixes
+
+- **nuxt:** compatibility with `^3.0.0-rc.9` ([#1623](https://github.com/vuejs/pinia/issues/1623)) ([9864beb](https://github.com/vuejs/pinia/commit/9864beb9b4b12e4fa60db521b2943cb86dbedbef))
+
+## [0.4.1](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.4.0...@pinia/nuxt@0.4.1) (2022-08-18)
+
+### Features
+
+- **nuxt:** automatically add pinia types ([#1551](https://github.com/vuejs/pinia/issues/1551)) ([5ebfcd8](https://github.com/vuejs/pinia/commit/5ebfcd8bbaaaacba7d03c66ac67775448fb02363))
+
+# [0.4.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.3.1...@pinia/nuxt@0.4.0) (2022-08-10)
+
+### Bug Fixes
+
+- **nuxt:** fully resolve pinia path ([#1537](https://github.com/vuejs/pinia/issues/1537)) ([9c3b521](https://github.com/vuejs/pinia/commit/9c3b5213663555b1c21f8ca5ef22b386a96ed916))
+
+## [0.3.1](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.3.0...@pinia/nuxt@0.3.1) (2022-07-25)
+
+- doc generation changes
+
+# [0.3.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.2.1...@pinia/nuxt@0.3.0) (2022-07-13)
+
+**Please read the release notes if you are upgrading from a previous version.**
+
+### Bug Fixes
+
+- **nuxt:** correct type for `$nuxt` ([4f1a514](https://github.com/vuejs/pinia/commit/4f1a5149a189d2f36e3c57cb5bf79eafb6544856))
+
+### Features
+
+- **nuxt:** add `autoImports` option in module ([42be2fc](https://github.com/vuejs/pinia/commit/42be2fc22aa99353821d9595061ca991d42127ff))
+- **nuxt:** deprecate old `$nuxt` context ([3e3041a](https://github.com/vuejs/pinia/commit/3e3041a84d2a1c7c4e6e62ac6c54ade949a1be94))
+- **nuxt:** remove wrong `$nuxt` in Nuxt 3 ([67e5417](https://github.com/vuejs/pinia/commit/67e5417708d1ade18f42c16f6f0085e3787d06bf))
+- usePinia composable ([c7debd6](https://github.com/vuejs/pinia/commit/c7debd692cf2034968dbaf7a72c39e621a3c5511))
+
+### BREAKING CHANGES
+
+- **nuxt:** `$nuxt` usage in stores defaults to type `any` unless
+  you install the `@nuxt/types` package. This is because that package is
+  quite heavy and can cause conflicts in projects not requiring it. Note
+  `$nuxt` is deprecated and shouldn't be used (cf the other breaking
+  changes notes).
+- **nuxt:** Starting on this version, `@pinia/nuxt` only works with
+  Nuxt 2 + Bridge and Nuxt 3, it no longer works with Nuxt 2 only. This is
+  necessary to have one single plugin that works well with the different
+  versions of Nuxt. If you aren't using bridge with Nuxt 2, check out the
+  [migration guide](https://v3.nuxtjs.org/bridge/overview) or pin your
+  `@pinia/nuxt` dependency in your:
+
+  ```diff
+  -    "@pinia/nuxt": "^0.2.1",
+  +    "@pinia/nuxt": "0.2.1",
+  ```
+
+  The `$nuxt` context usage should be replaced with globals like
+  `$fetch()` and `useNuxtApp()`. You can find more information about this
+  in Nuxt documentation:
+
+  - <https://v3.nuxtjs.org/bridge/bridge-composition-api/>
+  - <https://v3.nuxtjs.org/bridge/overview>
+
+- **nuxt:** in Nuxt 3, `$nuxt` is no longer available in stores.
+  This is because it was removed in Nuxt 3 and it is no longer the
+  _context_ as it used to be. Most of the features used there, like
+  `$fetch` are now globally available and therefore remove the need of it.
+  You can also use
+  [`useNuxtApp()`](https://v3.nuxtjs.org/bridge/bridge-composition-api/)
+  when necessary.
+
+## [0.2.1](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.2.0...@pinia/nuxt@0.2.1) (2022-07-12)
+
+### Bug Fixes
+
+- **nuxt:** add back the nuxtState ([0f68174](https://github.com/vuejs/pinia/commit/0f6817459959c28d53130ac74f8da137a5f26860)), closes [#1447](https://github.com/vuejs/pinia/issues/1447)
+- **nuxt:** use context.payload ([46775cf](https://github.com/vuejs/pinia/commit/46775cf77785102921ad233f63febf2f05102977)), closes [#1442](https://github.com/vuejs/pinia/issues/1442)
+
+# [0.2.0](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.1.9...@pinia/nuxt@0.2.0) (2022-07-11)
+
+### Bug Fixes
+
+- **nuxt:** plugin injection on latest Nuxt 3 context ([#1433](https://github.com/vuejs/pinia/issues/1433)) ([bd0c52f](https://github.com/vuejs/pinia/commit/bd0c52f75645a49226f0473d4b0d3ad1a65635c7))
+
+## [0.1.9](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.1.8...@pinia/nuxt@0.1.9) (2022-05-05)
+
+Update build tools
+
 ## [0.1.8](https://github.com/vuejs/pinia/compare/@pinia/nuxt@0.1.7...@pinia/nuxt@0.1.8) (2021-12-24)
 
 Override the 0.1.7 version for convenience but no code changes since 0.1.6.

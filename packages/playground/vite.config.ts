@@ -1,13 +1,13 @@
 import { defineConfig, Plugin } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import Vue from '@vitejs/plugin-vue'
 import { promises as fs } from 'fs'
 import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), copyPiniaPlugin()],
+  plugins: [Vue(), copyPiniaPlugin()],
   define: {
-    // __DEV__: 'true',
+    __DEV__: 'true',
     // __BROWSER__: 'true',
     __TEST__: 'false',
   },
@@ -15,7 +15,11 @@ export default defineConfig({
     // alias: {
     //   '@vue/composition-api': 'vue-demi',
     // },
-    dedupe: ['vue-demi', 'vue'],
+    dedupe: ['vue-demi', 'vue', 'pinia'],
+    alias: {
+      // FIXME: use fileToUrl
+      pinia: path.resolve(__dirname, '../pinia/src/index.ts'),
+    },
   },
   optimizeDeps: {
     exclude: ['vue-demi', '@vueuse/shared', '@vueuse/core', 'pinia'],

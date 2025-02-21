@@ -1,6 +1,6 @@
 # Composing Stores
 
-Composing stores is about having stores that use each other and there is one rule to follow:
+Composing stores is about having stores that use each other, and this is supported in Pinia. There is one rule to follow:
 
 If **two or more stores use each other**, they cannot create an infinite loop through _getters_ or _actions_. They cannot **both** directly read each other state in their setup function:
 
@@ -40,38 +40,36 @@ const useY = defineStore('y', () => {
 })
 ```
 
-## Nested stores
+## Nested Stores
 
-Note that if one store uses another store, **there is no need to create a new store in a separate file**, you can directly import it. Think of it as nesting.
+Note that if one store uses another store, you can directly import and call the `useStore()` function within _actions_ and _getters_. Then you can interact with the store just like you would from within a Vue component. See [Shared Getters](#Shared-Getters) and [Shared Actions](#Shared-Actions).
 
-You can call `useOtherStore()` at the top of any getter or action:
+When it comes to _setup stores_, you can simply use one of the stores **at the top** of the store function:
 
-```js
+```ts
+import { defineStore } from 'pinia'
 import { useUserStore } from './user'
+import { apiPurchase } from './api'
 
-export const cartStore = defineStore('cart', {
-  getters: {
-    // ... other getters
-    summary(state) {
-      const user = useUserStore()
+export const useCartStore = defineStore('cart', () => {
+  const user = useUserStore()
+  const list = ref([])
 
-      return `Hi ${user.name}, you have ${state.list.length} items in your cart. It costs ${state.price}.`
-    },
-  },
+  const summary = computed(() => {
+    return `Hi ${user.name}, you have ${list.value.length} items in your cart. It costs ${price.value}.`
+  })
 
-  actions: {
-    purchase() {
-      const user = useUserStore()
+  function purchase() {
+    return apiPurchase(user.id, list.value)
+  }
 
-      return apiPurchase(user.id, this.list)
-    },
-  },
+  return { summary, purchase }
 })
 ```
 
 ## Shared Getters
 
-You can simply call `useOtherStore()` inside a _getter_:
+You can simply call `useUserStore()` inside a _getter_:
 
 ```js
 import { defineStore } from 'pinia'
@@ -95,7 +93,8 @@ The same applies to _actions_:
 ```js
 import { defineStore } from 'pinia'
 import { useUserStore } from './user'
-
+import { apiOrderCart } from './api'
+ 
 export const useCartStore = defineStore('cart', {
   actions: {
     async orderCart() {
@@ -103,6 +102,33 @@ export const useCartStore = defineStore('cart', {
 
       try {
         await apiOrderCart(user.token, this.items)
+        // another action
+        this.emptyCart()
+      } catch (err) {
+        displayError(err)
+      }
+    },
+  },
+})
+```
+
+Since actions can be asynchronous, make sure **all of your `useStore()` calls appear before any `await`**. Otherwise, this could lead to using the wrong pinia instance _in SSR apps_:
+
+```js{7-8,11-13}
+import { defineStore } from 'pinia'
+import { useUserStore } from './user'
+import { apiOrderCart } from './api'
+  
+export const useCartStore = defineStore('cart', {
+  actions: {
+    async orderCart() {
+      // ✅ call at the top of the action before any `await`
+      const user = useUserStore()
+
+      try {
+        await apiOrderCart(user.token, this.items)
+        // ❌ called after an `await` statement
+        const otherStore = useOtherStore()
         // another action
         this.emptyCart()
       } catch (err) {

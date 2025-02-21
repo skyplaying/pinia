@@ -29,7 +29,7 @@ export function createPinia(): Pinia {
         app.provide(piniaSymbol, pinia)
         app.config.globalProperties.$pinia = pinia
         /* istanbul ignore else */
-        if (__DEV__ && IS_CLIENT) {
+        if (__USE_DEVTOOLS__ && IS_CLIENT) {
           registerPiniaDevtools(app, pinia)
         }
         toBeInstalled.forEach((plugin) => _p.push(plugin))
@@ -56,10 +56,26 @@ export function createPinia(): Pinia {
   })
 
   // pinia devtools rely on dev only features so they cannot be forced unless
-  // the dev build of Vue is used
-  if (__DEV__ && IS_CLIENT) {
+  // the dev build of Vue is used. Avoid old browsers like IE11.
+  if (__USE_DEVTOOLS__ && IS_CLIENT && typeof Proxy !== 'undefined') {
     pinia.use(devtoolsPlugin)
   }
 
   return pinia
+}
+
+/**
+ * Dispose a Pinia instance by stopping its effectScope and removing the state, plugins and stores. This is mostly
+ * useful in tests, with both a testing pinia or a regular pinia and in applications that use multiple pinia instances.
+ * Once disposed, the pinia instance cannot be used anymore.
+ *
+ * @param pinia - pinia instance
+ */
+export function disposePinia(pinia: Pinia) {
+  pinia._e.stop()
+  pinia._s.clear()
+  pinia._p.splice(0)
+  pinia.state.value = {}
+  // @ts-expect-error: non valid
+  pinia._a = null
 }

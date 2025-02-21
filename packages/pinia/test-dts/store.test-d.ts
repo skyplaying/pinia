@@ -1,5 +1,11 @@
-import { StoreGeneric, defineStore, expectType } from './'
-import { watch } from 'vue'
+import {
+  StoreGeneric,
+  acceptHMRUpdate,
+  defineStore,
+  expectType,
+  storeToRefs,
+} from './'
+import { computed, Ref, ref, UnwrapRef, watch, WritableComputedRef } from 'vue'
 
 const useStore = defineStore({
   id: 'name',
@@ -80,6 +86,32 @@ defineStore({
   },
 })
 
+interface Model {
+  id: number
+}
+
+// Define generic factory function
+export function init<User extends Model>(name = 'settings') {
+  return defineStore(name, {
+    state: () => {
+      return {
+        // Set one of the properties to the generic type
+        user: {} as User,
+      }
+    },
+    actions: {
+      // Add action which accepts argument with our generic type
+      set(u: UnwrapRef<User>) {
+        // See linter error when trying to assign arg value to the state
+        this.user = u
+      },
+    },
+  })
+}
+
+const s = init()()
+s.set({ id: 1 })
+
 // getters on not existing properties
 defineStore({
   id: '',
@@ -115,6 +147,10 @@ defineStore({
 })
 
 const store = useStore()
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useStore, import.meta.hot))
+}
 
 expectType<{ a: 'on' | 'off' }>(store.$state)
 expectType<number>(store.nested.counter)
@@ -206,7 +242,7 @@ function takeStore<TStore extends StoreGeneric>(store: TStore): TStore['$id'] {
 
 export const useSyncValueToStore = <
   TStore extends StoreGeneric,
-  TKey extends keyof TStore['$state']
+  TKey extends keyof TStore['$state'],
 >(
   propGetter: () => TStore[TKey],
   store: TStore,
@@ -252,3 +288,52 @@ useSyncValueToStore(() => 2, genericStore, 'myState')
 // @ts-expect-error: this type is known so it should yield an error
 useSyncValueToStore(() => false, genericStore, 'myState')
 useSyncValueToStore(() => 2, genericStore, 'random')
+
+const writableComputedStore = defineStore('computed-writable', () => {
+  const fruitsBasket = ref(['banana', 'apple', 'banana', 'orange'])
+  const total = computed(() => fruitsBasket.value.length)
+  const bananasAmount = computed<number>({
+    get: () => fruitsBasket.value.filter((fruit) => fruit === 'banana').length,
+    set: (newAmount) => {
+      fruitsBasket.value = fruitsBasket.value.filter(
+        (fruit) => fruit !== 'banana'
+      )
+      fruitsBasket.value.push(...Array(newAmount).fill('banana'))
+    },
+  })
+  const bananas = computed({
+    get: () => fruitsBasket.value.filter((fruit) => fruit === 'banana'),
+    set: (newFruit: string) =>
+      (fruitsBasket.value = fruitsBasket.value.map((fruit) =>
+        fruit === 'banana' ? newFruit : fruit
+      )),
+  })
+  bananas.value = 'hello' // TS ok
+  return { fruitsBasket, bananas, bananasAmount, total }
+})()
+
+expectType<number>(writableComputedStore.bananasAmount)
+// should allow writing to it
+writableComputedStore.bananasAmount = 0
+// @ts-expect-error: this one is readonly
+writableComputedStore.total = 0
+expectType<string[]>(writableComputedStore.bananas)
+// should allow setting a different type
+// @ts-expect-error: still not doable
+writableComputedStore.bananas = 'hello'
+
+const refs = storeToRefs(writableComputedStore)
+expectType<string[]>(refs.bananas.value)
+expectType<number>(refs.bananasAmount.value)
+refs.bananasAmount.value = 0
+// @ts-expect-error: this one is readonly
+refs.total.value = 0
+
+const refStore = defineStore('ref-bananas', () => {
+  const bananas = ref(['banana1', 'banana2'])
+  return { bananas }
+})()
+declare const conditionalStore: typeof refStore | typeof writableComputedStore
+expectType<Ref<string[]> | WritableComputedRef<'banana'[]>>(
+  storeToRefs(conditionalStore).bananas
+)
